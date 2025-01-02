@@ -1,4 +1,4 @@
-# HB9IIU Life Sat Tracker
+# HB9IIU Life Sat Tracker On ESP32
 ### **Efficient Real-Time Calculations on an ESP32**
 
 # Work in Progress 🚧
