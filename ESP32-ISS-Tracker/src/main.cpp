@@ -3041,7 +3041,6 @@ void setup()
 
 void loop()
 {
-
     // Define the speaker touch area
     int rectX = 196; // Top-left corner X
     int rectY = 100; // Top-left corner Y
