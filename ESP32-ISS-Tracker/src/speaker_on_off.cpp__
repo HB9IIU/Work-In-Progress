@@ -1,0 +1,108 @@
+#include <TFT_eSPI.h>
+TFT_eSPI tft = TFT_eSPI();
+
+// Function to draw the speaker ON icon
+
+void drawSpeakerON(int x, int y) {
+  // Clear the previous display area with a black rectangle
+  int width = 36;  // Adjust based on icon dimensions (24 * 1.5 scale)
+  int height = 36; // Adjust based on icon dimensions (24 * 1.5 scale)
+  tft.fillRect(x, y, width, height, TFT_BLACK);
+
+  // Function to draw a bold line
+  auto drawBoldLine = [&](int x0, int y0, int x1, int y1, uint16_t color, int thickness) {
+    for (int i = -thickness / 2; i <= thickness / 2; i++) {
+      tft.drawLine(x0 + i, y0, x1 + i, y1, color);
+      tft.drawLine(x0, y0 + i, x1, y1 + i, color);
+    }
+  };
+
+  float scale = 1.1;         // Scaling factor
+  int thickness = 1;         // Line thickness
+
+  // Semi-transparent filled shape (speaker body)
+  tft.fillTriangle(
+    x + scale * 13, y + scale * 3, 
+    x + scale * 7, y + scale * 8, 
+    x + scale * 5, y + scale * 8, 
+    TFT_DARKGREY
+  );
+
+  // Main outline of the speaker
+  drawBoldLine(x + scale * 13, y + scale * 3, x + scale * 7, y + scale * 8, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 7, y + scale * 8, x + scale * 5, y + scale * 8, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 5, y + scale * 8, x + scale * 3, y + scale * 10, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 3, y + scale * 10, x + scale * 3, y + scale * 14, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 3, y + scale * 14, x + scale * 5, y + scale * 16, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 5, y + scale * 16, x + scale * 7, y + scale * 16, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 7, y + scale * 16, x + scale * 13, y + scale * 21, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 13, y + scale * 21, x + scale * 13, y + scale * 3, TFT_WHITE, thickness);
+
+  // Curved sound waves
+  drawBoldLine(x + scale * 16, y + scale * 9, x + scale * 17, y + scale * 12, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 17, y + scale * 12, x + scale * 16, y + scale * 15, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 19, y + scale * 6, x + scale * 20, y + scale * 12, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 20, y + scale * 12, x + scale * 19, y + scale * 18, TFT_WHITE, thickness);
+}
+
+// Function to draw the speaker OFF icon
+void drawSpeakerOFF(int x, int y) {
+  // Clear the previous display area with a black rectangle
+  int width = 36;  // Adjust based on icon dimensions (24 * 1.5 scale)
+  int height = 36; // Adjust based on icon dimensions (24 * 1.5 scale)
+  tft.fillRect(x, y, width, height, TFT_BLACK);
+
+  // Function to draw a bold line
+  auto drawBoldLine = [&](int x0, int y0, int x1, int y1, uint16_t color, int thickness) {
+    for (int i = -thickness / 2; i <= thickness / 2; i++) {
+      tft.drawLine(x0 + i, y0, x1 + i, y1, color);
+      tft.drawLine(x0, y0 + i, x1, y1 + i, color);
+    }
+  };
+
+  float scale = 1.2;         // Scaling factor
+  int thickness = 1;         // Line thickness
+
+  // Semi-transparent filled shape (speaker body)
+  tft.fillTriangle(
+    x + scale * 13, y + scale * 3, 
+    x + scale * 7, y + scale * 8, 
+    x + scale * 5, y + scale * 8, 
+    TFT_DARKGREY
+  );
+
+  // Main outline of the speaker
+  drawBoldLine(x + scale * 13, y + scale * 3, x + scale * 7, y + scale * 8, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 7, y + scale * 8, x + scale * 5, y + scale * 8, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 5, y + scale * 8, x + scale * 3, y + scale * 10, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 3, y + scale * 10, x + scale * 3, y + scale * 14, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 3, y + scale * 14, x + scale * 5, y + scale * 16, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 5, y + scale * 16, x + scale * 7, y + scale * 16, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 7, y + scale * 16, x + scale * 13, y + scale * 21, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 13, y + scale * 21, x + scale * 13, y + scale * 3, TFT_WHITE, thickness);
+
+  // Cross lines
+  drawBoldLine(x + scale * 16, y + scale * 9, x + scale * 22, y + scale * 15, TFT_WHITE, thickness);
+  drawBoldLine(x + scale * 22, y + scale * 9, x + scale * 16, y + scale * 15, TFT_WHITE, thickness);
+}
+
+
+
+void setup() {
+  tft.init();
+  tft.setRotation(1);
+  tft.fillScreen(TFT_BLACK); // Set the background to black
+    pinMode(TFT_BLP, OUTPUT);  // for TFT backlight
+    digitalWrite(TFT_BLP, HIGH);
+
+
+}
+
+void loop() {
+  // Draw speaker ON and OFF icons, clearing the previous display
+  drawSpeakerON(10, 10);   // Draw ON icon
+  delay(1000);             // Pause to view it
+  drawSpeakerOFF(10, 10);  // Erase and draw OFF icon}
+ delay(1000);             // Pause to view it
+
+ }
