@@ -136,16 +136,54 @@ void initializeTFT()
 void displayWelcomeMessage(int duration)
 {
     tft.fillScreen(TFT_BLACK);
-    String title = "Welcome to HB9IIU Sat Life Tracker";
-    String version = String("Version: ") + VERSION_NUMBER + " (" + VERSION_DATE + ")";
-    String disclaimer = "Please use at your own risk!";
-    TFTprint("", TFT_GOLD);
-    TFTprint("       " + title, TFT_GOLD);
-    TFTprint("       ");
-    TFTprint("               " + version, TFT_GOLD);
-    TFTprint("       ");
-    TFTprint("             " + disclaimer, TFT_GOLD);
-    TFTprint("       ");
+
+    // Define content strings
+    String title = "HB9IIU Live Sat Tracker";
+    String slogan = "Explore the Skies. Track with Precision.";
+    String version = "Version: " + String(VERSION_NUMBER);
+    String versionDate = "(" + String(VERSION_DATE) + ")";
+    String disclaimer = "Disclaimer: Use at your own risk!";
+
+    // Set font and calculate screen width
+    tft.setTextFont(4); // Adjust font size as needed
+    tft.setTextSize(1); // Text size
+    int screenWidth = tft.width();
+
+    // Define colors
+    uint16_t titleColor = TFT_GOLD;
+    uint16_t sloganColor = TFT_SKYBLUE;
+    uint16_t versionColor = TFT_GREEN;
+    uint16_t dateColor = TFT_WHITE; // Different color for the date
+    uint16_t disclaimerColor = TFT_RED;
+
+    // Calculate line height
+    int lineHeight = tft.fontHeight() + 15; // Add padding between lines
+    int yPosition = 50;                     // Starting Y position for the title
+
+    // Display title
+    tft.setTextColor(titleColor, TFT_BLACK);
+    tft.drawString(title, (screenWidth - tft.textWidth(title)) / 2, yPosition);
+
+    // Display slogan
+    yPosition += lineHeight;
+    tft.setTextColor(sloganColor, TFT_BLACK);
+    tft.drawString(slogan, (screenWidth - tft.textWidth(slogan)) / 2, yPosition);
+
+    // Display version information
+    yPosition += lineHeight + 10; // Extra spacing before the version
+    tft.setTextColor(versionColor, TFT_BLACK);
+    tft.drawString(version, (screenWidth - tft.textWidth(version)) / 2, yPosition);
+
+    // Display date on a new line
+    yPosition += lineHeight; // Move to the next line
+    tft.setTextColor(dateColor, TFT_BLACK);
+    tft.drawString(versionDate, (screenWidth - tft.textWidth(versionDate)) / 2, yPosition);
+
+    // Display disclaimer
+    yPosition += lineHeight * 2;
+    tft.setTextColor(disclaimerColor, TFT_BLACK);
+    tft.drawString(disclaimer, (screenWidth - tft.textWidth(disclaimer)) / 2, yPosition);
+
     int width = max(max(title.length(), version.length()), disclaimer.length()) + 4; // Adjust frame width
 
     // Print top border

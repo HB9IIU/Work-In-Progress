@@ -3233,18 +3233,26 @@ void loop()
         }
     }
     //--------------------------------------------------------------------------------
+         // Process WebSocket events
+        webSocket.loop();
+   
     static unsigned long lastLoopTime = millis();
     if (millis() - lastLoopTime >= 1000 && touchCounter == 1)
     {
         displayMainPage();
         lastLoopTime = millis();
+        String data = String("{\"satName\":\"") + sat.satName + "\"," +
+                      "\"time\":\"" + formatTimeOnly(unixtime, true) + "\"," +
+                      "\"altitude\":" + sat.satAlt + "," +
+                      "\"azimuth\":" + sat.satAz + "," +
+                      "\"elevation\":" + sat.satEl + "," +
+                      "\"latitude\":" + sat.satLat + "," +
+                      "\"longitude\":" + sat.satLon + "," +
+                      "\"distance\":" + sat.satDist + "," +
+                      "\"sunAzimuth\":" + sat.sunAz + "," +
+                      "\"sunElevation\":" + sat.sunEl + "}";
+
+        webSocket.broadcastTXT(data); // Send the JSON data over WebSocket
     }
     refreshBecauseReturningFromOtherPage = false;
-    //----------------------------------------------------------------------------------
-    // Process WebSocket events
-    webSocket.loop();
-    // String data = String("{\"azimuth\":") + sat.satAz + ",\"elevation\":" + sat.satEl + "}";
-    String data = String("{\"satName\":\"") + sat.satName + "\"," + "\"altitude\":" + sat.satAlt + "," + "\"azimuth\":" + sat.satAz + "," + "\"elevation\":" + sat.satEl + "," + "\"latitude\":" + sat.satLat + "," + "\"longitude\":" + sat.satLon + "," + "\"distance\":" + sat.satDist + "," + "\"sunAzimuth\":" + sat.sunAz + "," + "\"sunElevation\":" + sat.sunEl + "}";
-
-    webSocket.broadcastTXT(data); // Send the JSON data over WebSocket
 }
