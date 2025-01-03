@@ -1948,6 +1948,15 @@ void beepsBeforeVisibility()
         delay(150);             // Wait 0.5 second between repetitions
     }
 }
+
+void beepAtTCA()
+{
+
+    ledcWriteTone(0, 2160); // Play 2.16kHz tone
+    delay(2000);            // Wait 1 second
+    ledcWriteTone(0, 0);    // Stop the tone
+}
+
 void displayAzElPlotPage()
 {
     const int stepsInSeconds = 1; // Step size in seconds
@@ -3022,7 +3031,7 @@ void setup()
     sat.init(SatNameCharArray, TLEline1CharArray, TLEline2CharArray);
     sat.site(OBSERVER_LATITUDE, OBSERVER_LONGITUDE, OBSERVER_ALTITUDE);
 
-    if (beepsNotificationBeforeVisibility == 0)
+    if (beepsNotificationBeforeAOSandLOS == 0)
     {
         speakerisON = false;
     }
@@ -3051,14 +3060,32 @@ void loop()
     unixtime = timeClient.getEpochTime(); // Get the current UNIX timestamp
     int deltaHour = 0;
     int deltaMin = 0;
-    unixtime = unixtime + deltaHour * 3600 + deltaMin * 60;
+    int deltaSeconds = -2500;
+    unixtime = unixtime + deltaHour * 3600 + deltaMin * 60 + deltaSeconds;
 
     // get new sat data
     sat.findsat(unixtime);
     // calculate orbit number
     getOrbitNumber(unixtime);
-    // beeps if its time ()
-    if (nextPassStart - unixtime == beepsNotificationBeforeVisibility && beepsNotificationBeforeVisibility != 0 && speakerisON)
+
+    // Manage Notifications
+    int deltaBipAOS = nextPassStart - unixtime;
+    int deltaBipTCA = nextPassCulminationTime - unixtime;
+    int deltaBipLOS = nextPassEnd - unixtime;
+    Serial.println(deltaBipAOS);
+    Serial.println(deltaBipTCA);
+    Serial.println(deltaBipLOS);
+    Serial.println(beepsNotificationBeforeAOSandLOS);
+
+    if (deltaBipAOS == beepsNotificationBeforeAOSandLOS && speakerisON)
+    {
+        beepsBeforeVisibility();
+    }
+    if (deltaBipTCA == 0 && speakerisON && notificationAtTCA)
+    {
+        beepAtTCA();
+    }
+    if (deltaBipLOS == beepsNotificationBeforeAOSandLOS && speakerisON)
     {
         beepsBeforeVisibility();
     }
@@ -3232,9 +3259,9 @@ void loop()
         }
     }
     //--------------------------------------------------------------------------------
-         // Process WebSocket events
-        webSocket.loop();
-   
+    // Process WebSocket events
+    webSocket.loop();
+
     static unsigned long lastLoopTime = millis();
     if (millis() - lastLoopTime >= 1000 && touchCounter == 1)
     {

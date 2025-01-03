@@ -62,7 +62,7 @@ const char* WIFI_PASSWORD_ALT  = "Nestle2010Nestle";
 // API configuration
 // TimeZoneDB is a free service that provides a comprehensive time zone database for cities worldwide. 
 // get yours here https://timezonedb.com/
-const char* TIMEZONE_API_KEY = "ELALBIREH7POYI19YHB";
+const char* TIMEZONE_API_KEY = "EH7POYI19YHB";
 
 
 // Observer location
@@ -75,7 +75,8 @@ const double OBSERVER_ALTITUDE = 500.0;
 //const int touchTreshold =900;
 
 // Buzzer notifications; set seconds before next pass, or 0 for none
-const bool beepsNotificationBeforeVisibility=15;
+const int beepsNotificationBeforeAOSandLOS=15;
+bool notificationAtTCA=true;
 
 
 
